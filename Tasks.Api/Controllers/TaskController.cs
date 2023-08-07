@@ -33,7 +33,7 @@ public class TaskController : Controller
         var task = _taskRepository.GetTaskByName(name);
         if (task == null)
         {
-            return NotFound();
+            return NotFound("Task not found.");
         }
 
         return Ok(_mapper.Map<GetTaskDto>(task));
@@ -44,7 +44,7 @@ public class TaskController : Controller
     {
         if (createTaskDto == null)
         {
-            return BadRequest();
+            return BadRequest("CreateTaskDto object is null.");
         }
 
         var taskEntity = _mapper.Map<Task>(createTaskDto);
@@ -59,13 +59,13 @@ public class TaskController : Controller
     {
         if (updateTaskDto == null)
         {
-            return BadRequest();
+            return BadRequest("UpdateTaskDto object is null.");
         }
 
         var taskEntity = _taskRepository.GetTaskByName(name);
         if (taskEntity == null)
         {
-            return NotFound();
+            return NotFound("Task not found.");
         }
 
         _mapper.Map(updateTaskDto, taskEntity);
@@ -81,7 +81,7 @@ public class TaskController : Controller
         var taskEntity = _taskRepository.GetCompletedTaskByName(name);
         if (taskEntity == null)
         {
-            return BadRequest();
+            return BadRequest($"There are no completed tasks for task {name}.");
         }
 
         _taskRepository.RemoveTask(taskEntity);
